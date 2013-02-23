@@ -4,8 +4,26 @@ class GroupController extends BaseController
 {
 	public function actionCreate()
 	{
-		$this->render('create');
+		$response = new AjaxResponse;
+		try {
+			$groupData = $this->request('Group');
+			$group = Group::createFromForm($groupData);
+
+			Group::store($group);
+			$response->setStatus(true, 'Saved successfully');
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+			$response->setStatus(false, $e->getMessage());
+		}
+
+		echo $response->asJson();
 	}
+
 
 	public function actionGetAllByUser()
 	{
@@ -20,6 +38,21 @@ class GroupController extends BaseController
 	{
 		
 		//$this->render('update');
+	}
+
+	public function actionGen() 
+	{
+		$group = new Group;
+
+		$group->setAttributes(array(
+			'creator' => '1',
+			'name' => 'Sup Test Group',
+			));
+
+		if (!$group->save()) {
+			var_dump($user->errors);
+			die;
+		}
 	}
 
 	// Uncomment the following methods and override them if needed
