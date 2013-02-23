@@ -22,13 +22,11 @@ class UserController extends Controller
 			$response->addMessages($vex->getErrors());
 		}
 		catch (Exception $e) {
-		  $response->setStatus(false, 'Saved failed');
+		  $response->setStatus(false, $e->getErrors());
 		
 		}
 		
 		echo $response->asJson();
-		
-	  
 	}
 
 	public function actionDelete()
