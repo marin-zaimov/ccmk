@@ -60,7 +60,25 @@ class GroupController extends BaseController
 	public function actionUpdate()
 	{
 		
-		//$this->render('update');
+		$response = new AjaxResponse;
+		try {
+			$groupData = $this->request('Group');
+			$group = Group::getById($groupData['id']);
+			$group->setAttributes($groupData);
+			Group::store($group);
+
+			$response->setStatus(true, 'Saved successfully');
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+			$response->setStatus(false, $e->getMessage());
+		}
+
+		echo $response->asJson();
 	}
 
 //http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/group/addUserToGroup?UserGroup[userId]=3&UserGroup[groupId]=2&UserGroup[invitedBy]=1
@@ -87,6 +105,31 @@ class GroupController extends BaseController
 		echo $response->asJson();
 	}
 
+//http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/group/removeUserFromGroup?UserGroup[userId]=3&UserGroup[groupId]=1
+	public function actionRemoveUserFromGroup()
+	{
+		$response = new AjaxResponse;
+		try {
+			$userGroupData = $this->request('UserGroup');
+
+			UserGroup::remove(array(
+				'userId' => $userGroupData['userId'],
+				'groupId' => $userGroupData['groupId'],
+			));
+
+			$response->setStatus(true, 'Removed successfully');
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+			$response->setStatus(false, $e->getMessage());
+		}
+
+		echo $response->asJson();
+	}
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()
