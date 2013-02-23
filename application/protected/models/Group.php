@@ -42,7 +42,7 @@ class Group extends BaseActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, creator, startDate, name', 'required'),
+			array('creator, startDate, name', 'required'),
 			array('id, creator', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>45),
 			array('endDate', 'safe'),

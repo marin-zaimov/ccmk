@@ -93,4 +93,12 @@ class UserGroup extends BaseActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+		
+	public function beforeValidate()
+	{
+	  if ($this->isNewRecord) {
+	    $this->startDate = date('Y-m-d', time());
+	  }
+	  return parent::beforeValidate();
+	}
 }

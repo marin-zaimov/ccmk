@@ -45,7 +45,7 @@ class Receipt extends BaseActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id', 'required'),
+			array('userId, groupId', 'required'),
 			array('id, userId, groupId', 'numerical', 'integerOnly'=>true),
 			array('amountDue', 'numerical'),
 			array('picture', 'length', 'max'=>255),

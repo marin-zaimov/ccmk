@@ -43,7 +43,7 @@ class Payment extends BaseActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, senderId, receiverId, startDate, amountDue, receiptId', 'required'),
+			array('senderId, receiverId, startDate, amountDue, receiptId', 'required'),
 			array('id, senderId, receiverId, amountDue, receiptId', 'numerical', 'integerOnly'=>true),
 			array('endDate', 'safe'),
 			// The following rule is used by search().
@@ -102,5 +102,13 @@ class Payment extends BaseActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+		
+	public function beforeValidate()
+	{
+	  if ($this->isNewRecord) {
+	    $this->startDate = date('Y-m-d', time());
+	  }
+	  return parent::beforeValidate();
 	}
 }

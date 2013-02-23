@@ -1,20 +1,32 @@
 <?php
 
-class UserController extends BaseController
+class ReceiptController extends BaseController
 {
-
-  //use this as a url in the browser to create
-  //http://localhost/ccmk/index.php/user/create?User[firstName]=Cliffton&User[lastName]=Thomas&User[email]=cliftot64@gmail.com
+	// http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/receipt/create?Receipt[amountDue]=30.57&Receipt[userId]=3&Receipt[groupId]=1&Receipt[name]=something%20swags%20here
 	public function actionCreate()
 	{
-	  $response = new AjaxResponse;
-	  try {
-	    $userData = $this->request('User');
+		$response = new AjaxResponse;
+		try {
+			$receiptData = $this->request('Receipt');
+			$receipt = Receipt::createFromForm($receiptData);
 
-	    $user = User::createFromForm($userData);
-		
-		  User::store($user);
-		  $response->setStatus(true, 'Saved successfully');
+			Receipt::store($receipt);
+
+			$group = $receipt->group;
+			$groupUsers = $group->users;
+			$numUsers = count($groupUsers);
+			$amountPerUser = $receipt->amountDue/$numUsers;
+			foreach ($groupUsers as $user) {
+				$payment = Payment::createFromArray(array(
+					'receiverId' => $receipt->userId,
+					'senderId' => $user->id,
+					'receiptId' => $receipt->id,
+					'amountDue' => $amountPerUser,
+				));
+				Payment::store($payment);
+			}
+
+			$response->setStatus(true, 'Saved successfully');
 		}
 		catch (ValidationException $vex)
 		{
@@ -23,34 +35,18 @@ class UserController extends BaseController
 		}
 		catch (Exception $e) {
 		  $response->setStatus(false, $e->getMessage());
-		
 		}
-		
 		echo $response->asJson();
 	}
 
-	public function actionDelete()
-	{
-		$this->render('delete');
-	}
-
-	public function actionGet()
-	{
-		$this->render('get');
-	}
-
-//http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/user/update?User[id]=4&User[firstName]=CliffSwagn&User[lastName]=Thomas&User[email]=cliftot64@gmail.com
 	public function actionUpdate()
 	{
 		$response = new AjaxResponse;
 	  try {
-	    $userData = $this->request('User');
-
-	    $user = User::getById($userData['id']);
-			
-			$user->setAttributes($userData);
-
-		  User::store($user);
+	    $receiptData = $this->request('Receipt');
+	    $receipt = Payment::getById($receiptData['id']);
+			$receipt->setAttributes($receiptData);
+		  Payment::store($receipt);
 		  $response->setStatus(true, 'Saved successfully');
 		}
 		catch (ValidationException $vex)
@@ -63,7 +59,6 @@ class UserController extends BaseController
 		}
 		echo $response->asJson();
 	}
-
 
 	// Uncomment the following methods and override them if needed
 	/*

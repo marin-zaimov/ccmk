@@ -1,20 +1,17 @@
 <?php
 
-class UserController extends BaseController
+class PaymentController extends BaseController
 {
-
-  //use this as a url in the browser to create
-  //http://localhost/ccmk/index.php/user/create?User[firstName]=Cliffton&User[lastName]=Thomas&User[email]=cliftot64@gmail.com
+// http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/payment/create?Payment[senderId]=1&Payment[receiverId]=3&Payment[amountDue]=50&Payment[receiptId]=1
 	public function actionCreate()
 	{
-	  $response = new AjaxResponse;
-	  try {
-	    $userData = $this->request('User');
+		$response = new AjaxResponse;
+		try {
+			$paymentData = $this->request('Payment');
+			$payment = Payment::createFromForm($paymentData);
 
-	    $user = User::createFromForm($userData);
-		
-		  User::store($user);
-		  $response->setStatus(true, 'Saved successfully');
+			Payment::store($payment);
+			$response->setStatus(true, 'Saved successfully');
 		}
 		catch (ValidationException $vex)
 		{
@@ -23,34 +20,18 @@ class UserController extends BaseController
 		}
 		catch (Exception $e) {
 		  $response->setStatus(false, $e->getMessage());
-		
 		}
-		
 		echo $response->asJson();
 	}
 
-	public function actionDelete()
-	{
-		$this->render('delete');
-	}
-
-	public function actionGet()
-	{
-		$this->render('get');
-	}
-
-//http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/user/update?User[id]=4&User[firstName]=CliffSwagn&User[lastName]=Thomas&User[email]=cliftot64@gmail.com
 	public function actionUpdate()
 	{
 		$response = new AjaxResponse;
 	  try {
-	    $userData = $this->request('User');
-
-	    $user = User::getById($userData['id']);
-			
-			$user->setAttributes($userData);
-
-		  User::store($user);
+	    $paymentData = $this->request('Payment');
+	    $payment = Payment::getById($paymentData['id']);
+			$payment->setAttributes($paymentData);
+		  Payment::store($payment);
 		  $response->setStatus(true, 'Saved successfully');
 		}
 		catch (ValidationException $vex)
@@ -63,7 +44,6 @@ class UserController extends BaseController
 		}
 		echo $response->asJson();
 	}
-
 
 	// Uncomment the following methods and override them if needed
 	/*

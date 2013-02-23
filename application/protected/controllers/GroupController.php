@@ -2,6 +2,7 @@
 
 class GroupController extends BaseController
 {
+	//http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/group/create?Group[creator]=1&Group[name]=booooomswag
 	public function actionCreate()
 	{
 		$response = new AjaxResponse;
@@ -10,6 +11,13 @@ class GroupController extends BaseController
 			$group = Group::createFromForm($groupData);
 
 			Group::store($group);
+
+			$userGroup = UserGroup::createFromArray(array(
+				'userId' => $groupData['creator'],
+				'groupId' => $group->id,
+			));
+			UserGroup::store($userGroup);
+
 			$response->setStatus(true, 'Saved successfully');
 		}
 		catch (ValidationException $vex)
@@ -24,12 +32,27 @@ class GroupController extends BaseController
 		echo $response->asJson();
 	}
 
-
+//http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/group/getAllByUser?userId=1
 	public function actionGetAllByUser()
 	{
-	  $userId = $_GET['userId'];
-	  
-	  $groups = Group::model()->findAllByAttributes(array('creator' => $userId)):
+
+		$response = new AjaxResponse;
+		try {
+		  $userId = $this->request('userId');
+		  $user = User::getById($userId);
+		  $groups = $user->groups;
+		  $retGroups = array();
+		  foreach ($groups as $g) {
+		  	$retGroups[] = $g->attributes;
+		  }
+			$response->setStatus(true, 'Coolness');
+			$response->addData('groups', $retGroups);
+		}
+		catch (Exception $e) {
+			$response->setStatus(false, $e->getMessage());
+		}
+		echo $response->asJson();
+
 	  
 		//$this->render('getAllByUser');
 	}
@@ -40,19 +63,28 @@ class GroupController extends BaseController
 		//$this->render('update');
 	}
 
-	public function actionGen() 
+//http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/group/addUserToGroup?UserGroup[userId]=3&UserGroup[groupId]=2&UserGroup[invitedBy]=1
+	public function actionAddUserToGroup()
 	{
-		$group = new Group;
+		$response = new AjaxResponse;
+		try {
+			$userGroupData = $this->request('UserGroup');
+			$userGroup = UserGroup::createFromForm($userGroupData);
 
-		$group->setAttributes(array(
-			'creator' => '1',
-			'name' => 'Sup Test Group',
-			));
+			UserGroup::store($userGroup);
 
-		if (!$group->save()) {
-			var_dump($user->errors);
-			die;
+			$response->setStatus(true, 'Saved successfully');
 		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+			$response->setStatus(false, $e->getMessage());
+		}
+
+		echo $response->asJson();
 	}
 
 	// Uncomment the following methods and override them if needed
