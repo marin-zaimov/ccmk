@@ -11,18 +11,18 @@ class UserController extends Controller
 	  try {
 	    $userData = $_GET['User'];
 
-	    $user = new User;
+	    $user = User::createFromForm($userData);
 		
-		  $user->setAttributes($userData);
-		
-		
-		  $user->save();
+		  User::store($user);
 		  $response->setStatus(true, 'Saved successfully');
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
 		}
 		catch (Exception $e) {
 		  $response->setStatus(false, 'Saved failed');
-		  $response->addMessages($user->errors);
-		  //$response->addData('sample', $sample);
 		
 		}
 		
