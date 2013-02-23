@@ -56,9 +56,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		
 		'db'=>array(
-			'class'=>'application.extensions.PHPPDO.CPdoDbConnection',
-      'pdoClass' => 'PHPPDO',
-			'connectionString' => 'mysql:localhost;dbname=ccmk',
+			'connectionString' => 'mysql:ec2-50-17-177-44.compute-1.amazonaws.com;dbname=ccmk',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => 'marin',
