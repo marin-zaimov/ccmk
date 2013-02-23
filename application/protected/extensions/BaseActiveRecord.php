@@ -1,9 +1,5 @@
 <?php
 
-/**
- * class TCPBaseActiveRecord
- * @package tcp.extensions.TCP
- */
 class BaseActiveRecord extends CActiveRecord
 {
 	public function getLastId()

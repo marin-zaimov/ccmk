@@ -1,6 +1,6 @@
 <?php
 
-class UserController extends Controller
+class UserController extends BaseController
 {
 
   //use this as a url in the browser to create
