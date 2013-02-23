@@ -9,7 +9,7 @@ class UserController extends BaseController
 	{
 	  $response = new AjaxResponse;
 	  try {
-	    $userData = $_GET['User'];
+	    $userData = $this->request('User');
 
 	    $user = User::createFromForm($userData);
 		
