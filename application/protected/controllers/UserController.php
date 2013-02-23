@@ -7,19 +7,26 @@ class UserController extends Controller
   //http://localhost/ccmk/index.php/user/create?User[firstName]=Cliffton&User[lastName]=Thomas&User[email]=cliftot64@gmail.com
 	public function actionCreate()
 	{
-	  $userData = $_GET['User'];
+	  $response = new AjaxResponse;
+	  try {
+	    $userData = $_GET['User'];
 
-	  $user  = new User;
+	    $user = new User;
 		
-		$user->setAttributes($userData);
+		  $user->setAttributes($userData);
 		
 		
-		if ($user->save()) {
-		  var_dump('saved');
-		}		
-		else {
-		  var_dump($user->errors);
+		  $user->save();
+		  $response->setStatus(true, 'Saved successfully');
 		}
+		catch (Exception $e) {
+		  $response->setStatus(false, 'Saved failed');
+		  $response->addMessages($user->errors);
+		  //$response->addData('sample', $sample);
+		
+		}
+		
+		echo $response->asJson();
 		
 	  
 	}
