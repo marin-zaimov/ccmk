@@ -56,6 +56,8 @@ return array(
 		// uncomment the following to use a MySQL database
 		
 		'db'=>array(
+			'class'=>'application.extensions.PHPPDO.CPdoDbConnection',
+      'pdoClass' => 'PHPPDO',
 			'connectionString' => 'mysql:localhost;dbname=ccmk',
 			'emulatePrepare' => true,
 			'username' => 'root',
