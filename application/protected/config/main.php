@@ -56,7 +56,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		
 		'db'=>array(
-			'connectionString' => 'mysql:ec2-50-17-177-44.compute-1.amazonaws.com;dbname=ccmk',
+			'connectionString' => 'mysql:localhost;dbname=ccmk',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => 'marin',
