@@ -4,7 +4,7 @@
  * class TCPBaseActiveRecord
  * @package tcp.extensions.TCP
  */
-class TCPBaseActiveRecord extends CActiveRecord
+class BaseActiveRecord extends CActiveRecord
 {
 	public function getLastId()
 	{

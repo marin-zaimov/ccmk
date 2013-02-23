@@ -10,7 +10,7 @@
  * @property string $endDate
  * @property integer $invitedBy
  */
-class UserGroup extends CActiveRecord
+class UserGroup extends BaseActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.

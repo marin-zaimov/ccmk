@@ -17,7 +17,7 @@
  * @property Group $group
  * @property User $user
  */
-class Receipt extends CActiveRecord
+class Receipt extends BaseActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.

@@ -15,7 +15,7 @@
  * The followings are the available model relations:
  * @property Receipt $receipt
  */
-class Payment extends CActiveRecord
+class Payment extends BaseActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
