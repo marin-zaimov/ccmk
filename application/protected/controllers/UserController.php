@@ -22,7 +22,7 @@ class UserController extends BaseController
 			$response->addMessages($vex->getErrors());
 		}
 		catch (Exception $e) {
-		  $response->setStatus(false, $e->getErrors());
+		  $response->setStatus(false, $e->getMessage());
 		
 		}
 		
