@@ -45,6 +45,36 @@ class PaymentController extends BaseController
 		echo $response->asJson();
 	}
 
+// http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/payment/bySender?senderId=1
+	public function actionBySender()
+	{
+		$response = new AjaxResponse;
+		$senderId = $this->request('senderId');
+		try {
+	    $senderId = $this->request('senderId');
+	    $user = User::getById($senderId);
+	    $paymentsOwed = $user->paymentsOwed;
+	    $payments = array();
+	    foreach ($paymentsOwed as $p) {
+	    	$pAttr = $p->attributes(array('receiver', 'receipt'), false);
+	    	$pAttr['group'] = $p->receipt->group->attributes;
+	    	$payments[] = (object) $pAttr;
+	    }
+		  $response->setStatus(true, 'Retrieved successfully');
+		  $response->addData('payments', $payments);
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+		  $response->setStatus(false, $e->getMessage());
+		}
+		echo $response->asJson();
+
+	}
+
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()

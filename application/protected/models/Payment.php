@@ -63,6 +63,7 @@ class Payment extends BaseActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'receipt' => array(self::BELONGS_TO, 'Receipt', 'receiptId'),
+			'receiver' => array(self::BELONGS_TO, 'User', 'receiverId')
 		);
 	}
 

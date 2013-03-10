@@ -63,6 +63,7 @@ class User extends BaseActiveRecord
 		return array(
 			'receipts' => array(self::HAS_MANY, 'Receipt', 'userId'),
 			'groups' => array(self::MANY_MANY, 'Group', 'User_Group(userId, groupId)'),
+			'paymentsOwed' => array(self::HAS_MANY, 'Payment', 'senderId'),
 		);
 	}
 

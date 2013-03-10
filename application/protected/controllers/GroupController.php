@@ -43,7 +43,14 @@ class GroupController extends BaseController
 		  $groups = $user->groups;
 		  $retGroups = array();
 		  foreach ($groups as $g) {
-		  	$retGroups[] = $g->attributes;
+		  	$gAttr = $g->attributes(array('users', 'receipts'));
+		  	$updatedReceipts = array();
+		  	foreach ($g->receipts as $r) {
+		  		$rAttr = $r->attributes(array('payments'));
+		  		$updatedReceipts[] = $rAttr;
+		  	}
+		  	$gAttr->receipts = $updatedReceipts;
+		  	$retGroups[] = $gAttr;
 		  }
 			$response->setStatus(true, 'Coolness');
 			$response->addData('groups', $retGroups);
