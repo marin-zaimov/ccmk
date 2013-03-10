@@ -9,8 +9,9 @@
  * @property integer $receiverId
  * @property string $startDate
  * @property string $endDate
- * @property integer $amountDue
+ * @property double $amountDue
  * @property integer $receiptId
+ * @property double $amountPaid
  *
  * The followings are the available model relations:
  * @property Receipt $receipt
@@ -44,11 +45,12 @@ class Payment extends BaseActiveRecord
 		// will receive user inputs.
 		return array(
 			array('senderId, receiverId, startDate, amountDue, receiptId', 'required'),
-			array('id, senderId, receiverId, amountDue, receiptId', 'numerical', 'integerOnly'=>true),
+			array('id, senderId, receiverId, receiptId', 'numerical', 'integerOnly'=>true),
+			array('amountDue, amountPaid', 'numerical'),
 			array('endDate', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, senderId, receiverId, startDate, endDate, amountDue, receiptId', 'safe', 'on'=>'search'),
+			array('id, senderId, receiverId, startDate, endDate, amountDue, receiptId, amountPaid', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -77,6 +79,7 @@ class Payment extends BaseActiveRecord
 			'endDate' => 'End Date',
 			'amountDue' => 'Amount Due',
 			'receiptId' => 'Receipt',
+			'amountPaid' => 'Amount Paid',
 		);
 	}
 
@@ -98,6 +101,7 @@ class Payment extends BaseActiveRecord
 		$criteria->compare('endDate',$this->endDate,true);
 		$criteria->compare('amountDue',$this->amountDue);
 		$criteria->compare('receiptId',$this->receiptId);
+		$criteria->compare('amountPaid',$this->amountPaid);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
