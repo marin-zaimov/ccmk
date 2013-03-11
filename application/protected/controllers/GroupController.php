@@ -8,6 +8,7 @@ class GroupController extends BaseController
 		$response = new AjaxResponse;
 		try {
 			$groupData = $this->request('Group');
+			$userEmailsData = $this->request('Emails');
 			$group = Group::createFromForm($groupData);
 
 			Group::store($group);
@@ -15,9 +16,26 @@ class GroupController extends BaseController
 			$userGroup = UserGroup::createFromArray(array(
 				'userId' => $groupData['creator'],
 				'groupId' => $group->id,
+				'invitedBy' => $groupData['creator'],
 			));
 			UserGroup::store($userGroup);
 
+			$creatorUser = User::getById($groupData['creator']);
+
+			foreach ($userEmailsData as $email) {
+				$user = User::model()->findByAttributes(array('email'=>$email));
+				if (!empty($user) && $creatorUser->id != $user->id) {
+					$userGroupData = array(
+						'userId' => $user->id,
+						'groupId' => $group->id,
+						'invitedBy' => $group->creator,
+					);
+					$userGroup = UserGroup::createFromForm($userGroupData);
+					//commented so it doesnt thrpw an exception using ::store()
+					//UserGroup::store($userGroup);
+					$userGroup->save();
+				}
+			}
 			$response->setStatus(true, 'Saved successfully');
 		}
 		catch (ValidationException $vex)

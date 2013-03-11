@@ -60,6 +60,58 @@ class ReceiptController extends BaseController
 		echo $response->asJson();
 	}
 
+
+	// http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/receipt/getAllByUserId?userId=1
+	public function actionGetAllByUserId()
+	{
+		$response = new AjaxResponse;
+	  try {
+	    $userId = $this->request('userId');
+	    $user = User::getById($userId);
+			$receipts = array();
+
+		  foreach ($user->receipts as $r) {
+		  	$receipts[] = $r->attributes(array('payments'));
+		  }
+		  $response->setStatus(true, 'Retreived successfully');
+		  $response->addData('receipts', $receipts);
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+		  $response->setStatus(false, $e->getMessage());
+		}
+		echo $response->asJson();
+	}
+
+	// http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/receipt/getAllByGroupId?groupId=2
+	public function actionGetAllByGroupId()
+	{
+		$response = new AjaxResponse;
+	  try {
+	    $groupId = $this->request('groupId');
+	    $group = Group::getById($groupId);
+	    $receipts = array();
+
+	    foreach ($group->receipts as $r) {
+		  	$receipts[] = $r->attributes(array('payments'));
+		  }
+		  $response->setStatus(true, 'Retreived successfully');
+		  $response->addData('receipts', $receipts);
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+		  $response->setStatus(false, $e->getMessage());
+		}
+		echo $response->asJson();
+	}
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()
