@@ -110,4 +110,14 @@ class Receipt extends BaseActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function isPaid()
+	{
+		foreach ($this->payments as $p) {
+			if ($p->amountDue > $p->amountPaid) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

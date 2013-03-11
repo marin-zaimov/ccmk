@@ -44,9 +44,9 @@ class ReceiptController extends BaseController
 		$response = new AjaxResponse;
 	  try {
 	    $receiptData = $this->request('Receipt');
-	    $receipt = Payment::getById($receiptData['id']);
+	    $receipt = Receipt::getById($receiptData['id']);
 			$receipt->setAttributes($receiptData);
-		  Payment::store($receipt);
+		  Receipt::store($receipt);
 		  $response->setStatus(true, 'Saved successfully');
 		}
 		catch (ValidationException $vex)
@@ -71,7 +71,9 @@ class ReceiptController extends BaseController
 			$receipts = array();
 
 		  foreach ($user->receipts as $r) {
-		  	$receipts[] = $r->attributes(array('payments'));
+		  	$rAttr = $r->attributes(array('payments'));
+		  	$rAttr->paid = $r->isPaid();
+		  	$receipts[] = $rAttr;
 		  }
 		  $response->setStatus(true, 'Retreived successfully');
 		  $response->addData('receipts', $receipts);
@@ -97,7 +99,9 @@ class ReceiptController extends BaseController
 	    $receipts = array();
 
 	    foreach ($group->receipts as $r) {
-		  	$receipts[] = $r->attributes(array('payments'));
+		  	$rAttr = $r->attributes(array('payments'));
+		  	$rAttr->paid = $r->isPaid();
+		  	$receipts[] = $rAttr;
 		  }
 		  $response->setStatus(true, 'Retreived successfully');
 		  $response->addData('receipts', $receipts);
@@ -112,6 +116,31 @@ class ReceiptController extends BaseController
 		}
 		echo $response->asJson();
 	}
+
+	public function actionGetById()
+	{
+		$response = new AjaxResponse;
+	  try {
+	    $receiptId = $this->request('receiptId');
+	    $receipt = Receipt::getById($receiptId);
+
+	  	$rAttr = $receipt->attributes(array('payments'));
+	  	$rAttr->paid = $receipt->isPaid();
+		  
+		  $response->setStatus(true, 'Retreived successfully');
+		  $response->addData('receipt', $rAttr);
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+		  $response->setStatus(false, $e->getMessage());
+		}
+		echo $response->asJson();
+	}
+
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()
