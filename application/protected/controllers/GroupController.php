@@ -2,6 +2,35 @@
 
 class GroupController extends BaseController
 {
+
+	//http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/group/getbyId?groupId=1
+	public function actionGetById()
+	{
+
+		$response = new AjaxResponse;
+		try {
+		  $groupId = $this->request('groupId');
+		  $group = Group::getById($groupId);
+
+	  	$gAttr = $group->attributes(array('users', 'receipts'));
+	  	$updatedReceipts = array();
+	  	foreach ($group->receipts as $r) {
+	  		$rAttr = $r->attributes(array('payments'));
+		  	$rAttr->paid = $r->isPaid();
+	  		$updatedReceipts[] = $rAttr;
+	  	}
+	  	$gAttr->receipts = $updatedReceipts;
+
+			$response->setStatus(true, 'Retreived successfully');
+			$response->addData('group', $gAttr);
+		}
+		catch (Exception $e) {
+			$response->setStatus(false, $e->getMessage());
+		}
+		echo $response->asJson();
+	}
+
+
 	//http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/group/create?Group[creator]=1&Group[name]=booooomswag
 	public function actionCreate()
 	{
@@ -65,6 +94,7 @@ class GroupController extends BaseController
 		  	$updatedReceipts = array();
 		  	foreach ($g->receipts as $r) {
 		  		$rAttr = $r->attributes(array('payments'));
+		  		$rAttr->paid = $r->isPaid();
 		  		$updatedReceipts[] = $rAttr;
 		  	}
 		  	$gAttr->receipts = $updatedReceipts;
@@ -78,8 +108,6 @@ class GroupController extends BaseController
 		}
 		echo $response->asJson();
 
-	  
-		//$this->render('getAllByUser');
 	}
 
 	public function actionUpdate()
