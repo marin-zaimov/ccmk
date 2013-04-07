@@ -24,6 +24,7 @@ class PaymentController extends BaseController
 		echo $response->asJson();
 	}
 
+// http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/payment/update?Payment[id]=1&Payment[senderId]=1&Payment[receiverId]=3&Payment[amountDue]=50&Payment[receiptId]=1
 	public function actionUpdate()
 	{
 		$response = new AjaxResponse;
@@ -31,6 +32,29 @@ class PaymentController extends BaseController
 	    $paymentData = $this->request('Payment');
 	    $payment = Payment::getById($paymentData['id']);
 			$payment->setAttributes($paymentData);
+		  Payment::store($payment);
+		  $response->setStatus(true, 'Saved successfully');
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+		  $response->setStatus(false, $e->getMessage());
+		}
+		echo $response->asJson();
+	}
+
+// http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/payment/pay?userId=1&receiptId=2
+	public function actionPay()
+	{
+		$response = new AjaxResponse;
+	  try {
+	    $userId = $this->request('userId');
+	    $receiptId = $this->request('receiptId');
+	    $payment = Payment::model()->findByAttributes(array('senderId'=>$userId, 'receiptId'=>$receiptId));
+			$payment->amountPaid = $payment->amountDue;
 		  Payment::store($payment);
 		  $response->setStatus(true, 'Saved successfully');
 		}
@@ -59,6 +83,38 @@ class PaymentController extends BaseController
 	    	$pAttr = $p->attributes(array('receiver', 'receipt'), false);
 	    	$pAttr['group'] = $p->receipt->group->attributes;
 	    	$payments[] = (object) $pAttr;
+	    }
+		  $response->setStatus(true, 'Retrieved successfully');
+		  $response->addData('payments', $payments);
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+		  $response->setStatus(false, $e->getMessage());
+		}
+		echo $response->asJson();
+
+	}
+
+// http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/payment/bySender?senderId=1
+	public function actionUnpaidBySender()
+	{
+		$response = new AjaxResponse;
+		$senderId = $this->request('senderId');
+		try {
+	    $senderId = $this->request('senderId');
+	    $user = User::getById($senderId);
+	    $paymentsOwed = $user->paymentsOwed;
+	    $payments = array();
+	    foreach ($paymentsOwed as $p) {
+	    	if ($p->amountDue != $p->amountPaid) {
+		    	$pAttr = $p->attributes(array('receiver', 'receipt'), false);
+		    	$pAttr['group'] = $p->receipt->group->attributes;
+		    	$payments[] = (object) $pAttr;
+		    }
 	    }
 		  $response->setStatus(true, 'Retrieved successfully');
 		  $response->addData('payments', $payments);

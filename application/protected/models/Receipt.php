@@ -114,10 +114,10 @@ class Receipt extends BaseActiveRecord
 	public function isPaid()
 	{
 		foreach ($this->payments as $p) {
-			if ($p->amountDue > $p->amountPaid) {
-				return false;
+			if ($p->amountDue != $p->amountPaid) {
+				return 'false';
 			}
 		}
-		return true;
+		return 'true';
 	}
 }

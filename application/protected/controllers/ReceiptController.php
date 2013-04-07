@@ -15,15 +15,21 @@ class ReceiptController extends BaseController
 			$group = $receipt->group;
 			$groupUsers = $group->users;
 			$numUsers = count($groupUsers);
-			$amountPerUser = $receipt->amountDue/$numUsers;
-			foreach ($groupUsers as $user) {
-				$payment = Payment::createFromArray(array(
-					'receiverId' => $receipt->userId,
-					'senderId' => $user->id,
-					'receiptId' => $receipt->id,
-					'amountDue' => $amountPerUser,
-				));
-				Payment::store($payment);
+			if ($numUsers) {
+				$amountPerUser = $receipt->amountDue/$numUsers;
+				foreach ($groupUsers as $user) {
+					$payment = Payment::createFromArray(array(
+						'receiverId' => $receipt->userId,
+						'senderId' => $user->id,
+						'receiptId' => $receipt->id,
+						'amountDue' => $amountPerUser,
+						'amountPaid' => 0
+					));
+					if ($user->id == $receipt->userId) {
+						$payment->amountPaid = $amountPerUser;
+					}
+					Payment::store($payment);
+				}
 			}
 
 			$response->setStatus(true, 'Saved successfully');
@@ -72,6 +78,7 @@ class ReceiptController extends BaseController
 
 		  foreach ($user->receipts as $r) {
 		  	$rAttr = $r->attributes(array('payments'));
+		  	$rAttr->groupName = $r->group->name;
 		  	$rAttr->paid = $r->isPaid();
 		  	$receipts[] = $rAttr;
 		  }
