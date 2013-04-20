@@ -17,6 +17,7 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		'application.extensions.*',
+		'application.extensions.paypal.*',
 	),
 
 	'modules'=>array(
