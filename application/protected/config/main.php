@@ -18,6 +18,9 @@ return array(
 		'application.components.*',
 		'application.extensions.*',
 		'application.extensions.paypal.*',
+		'application.extensions.paypal.lib.PayPal.Api.*',
+		'application.extensions.paypal.lib.PayPal.Common.*',
+		'application.extensions.paypal.lib.PayPal.Rest.*',
 	),
 
 	'modules'=>array(
