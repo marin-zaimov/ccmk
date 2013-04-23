@@ -69,7 +69,7 @@ class BillsController extends BaseController
       // from the d.b. hard code for simplicity here
       $srcBox = getcwd() . "/protected/extensions/paypal/vendor/paypal/sdk-core-php/config/sdk_config.ini.box";
       $srcOj = getcwd() . "/protected/extensions/paypal/vendor/paypal/sdk-core-php/config/sdk_config.ini.oj";
-      $src = $srcBox;
+      $src = $srcOj;
       $dst = getcwd() . "/protected/extensions/paypal/vendor/paypal/sdk-core-php/config/sdk_config.ini";
       if($paypalAccount == "ostrichjockey@hotmail.com"){
         $src = $srcBox; // person getting paid is opposite of whoever is logged in
