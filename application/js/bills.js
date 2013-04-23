@@ -6,8 +6,9 @@ function getPayments(){
   //$('#wuddup').click('on', function(){
 
   var payload = {senderId: 1};
+
   $.ajax({
-    url: 'bySender',
+    url: 'getUnpaid',
     data: JSON.stringify(payload),
     dataType: 'json',
     type: 'POST',
@@ -15,6 +16,10 @@ function getPayments(){
       var payments = response.data.payments;
       var i = 0;
       for(i = 0; i < payments.length; ++i){
+        
+         
+
+
         var row = "";
         var p = payments[i]; 
         var groupTd = '<td>'+p.group.name+'</td>';
@@ -29,7 +34,7 @@ function getPayments(){
         row += groupTd + receiptTd + receiverTd + totalTd + amountDueTd + payBtnTd;
         row += '</tr>';
         $('#unpaid').append(row);
-
+        
         // on pay button click
         $('#'+ p.senderId +'-'+ p.receipt.id).on('click', function(e){
 
@@ -38,19 +43,21 @@ function getPayments(){
           $('#'+e.target.id).text('Pending Confirmation');*/
 
 
+
           var ids = e.target.id.split("-");
           var data = {
             userId: ids[0],
             receiptId: ids[1]
           };
-          console.log(data);
+
           $.ajax({
             url: 'pay',
             data: JSON.stringify(data),
             dataType: 'json',
             type: 'POST',
             success: function(response){
-              $.sticky('yay!', {'position': 'top-center', 'type': 'st-success'});
+              $.sticky('Successfully charged your PayPal account.', {'position': 'top-center', 'type': 'st-success'});
+              $('#'+e.target.id).closest('tr').remove();
             },
             error: function(){
               $.sticky("Error on PayPal submit.", {'position': 'top-center', 'type': 'st-error'});

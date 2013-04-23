@@ -16,8 +16,5 @@ $this->pageTitle=Yii::app()->name;
   </tr>
 </table>
 
-<h3>Awaiting Confirmation</h3>
-<table id="awaiting"></table>
-
 
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bills.js"></script>

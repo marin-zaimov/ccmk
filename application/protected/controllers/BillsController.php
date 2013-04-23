@@ -15,16 +15,18 @@ class BillsController extends BaseController
 	}
 
 
-	public function actionBySender()
+	public function actionGetUnpaid()
 	{
-    $postData = json_decode(file_get_contents("php://input"));
-    $senderId = $postData->senderId;
-
-		$response = new AjaxResponse;
+    //$postData = json_decode(file_get_contents("php://input"));
+    //$senderId = $postData->senderId;
 		try {
-	    $user = User::getById($senderId);
+	    //$user = User::getById($senderId);
+      $user = User::model()->findByAttributes(array('paypal_account' => Yii::app()->user->getState('paypal_account')));
+      $senderId = $user->id;
+      $response = new AjaxResponse;
       
-	    $paymentsOwed = $user->paymentsOwed;
+      $paymentsOwed = Payment::model()->findAllByAttributes(array('senderId' => $senderId),'amountPaid = 0');
+
 	    $payments = array();
 	    foreach ($paymentsOwed as $p) {
 	    	$pAttr = $p->attributes(array('receiver', 'receipt'), false);
