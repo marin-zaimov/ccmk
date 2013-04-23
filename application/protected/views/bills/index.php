@@ -4,10 +4,19 @@
 $this->pageTitle=Yii::app()->name;
 ?>
 
-<h2>Unpaid Bills</h2> 
-<table id="unpaid"></table>
-<button id="wuddup">Wuddup</button>
-<h2>Awaiting Confirmation</h2>
+<h3>Unpaid Bills</h3> 
+
+<table id="unpaid" class="table table-hover">
+  <tr>
+    <th>Group</th>
+    <th>Receipt</th>
+    <th>Receiver</th>
+    <th>Total</th>
+    <th>Amount Due</th>
+  </tr>
+</table>
+
+<h3>Awaiting Confirmation</h3>
 <table id="awaiting"></table>
 
 
