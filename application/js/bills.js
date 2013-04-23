@@ -22,13 +22,17 @@ function getPayments(){
         var receiverTd = '<td>'+p.receiver.firstName+' '+p.receiver.lastName+'</td>';
         var totalTd = '<td>'+p.receipt.amountDue+'</td>';
         var amountDueTd = '<td>'+p.amountDue+'</td>';
+        var payBtnTd = '<td><button id="pay-' + p.id + '" style="background-color:#00FF00;">Pay now</button></td>';
         var row = '<tr>'
         
-        row += '<tr>';
-        row += groupTd + receiptTd + receiverTd + totalTd + amountDueTd;
+        row += '<tr>';// id="pay-' + p.id + '">';
+        row += groupTd + receiptTd + receiverTd + totalTd + amountDueTd + payBtnTd;
         row += '</tr>';
         $('#unpaid').append(row);
-        //console.log(payments[i]);
+        $('#pay-'+p.id).on('click', function(e){
+          console.log(e);
+          alert(e.target.id);
+        });
       }
       /*$.each(function(index, element){
       });
