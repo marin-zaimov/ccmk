@@ -20,6 +20,8 @@
 
   
   <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.min.js"></script>
+  <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/sticky.min.js"></script>
+  <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap.min.js"></script>
 
 
 

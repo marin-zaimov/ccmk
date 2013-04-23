@@ -30,6 +30,10 @@ function getPayments(){
         row += '</tr>';
         $('#unpaid').append(row);
         $('#pay-'+p.id).on('click', function(e){
+          $('#'+e.target.id).css('background-color', 'red');
+          $('#'+e.target.id).attr('disabled', true);
+          $('#'+e.target.id).text('Pending Confirmation');
+
           console.log(e);
           alert(e.target.id);
         });
