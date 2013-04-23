@@ -22,31 +22,50 @@ function getPayments(){
         var receiverTd = '<td>'+p.receiver.firstName+' '+p.receiver.lastName+'</td>';
         var totalTd = '<td>'+p.receipt.amountDue+'</td>';
         var amountDueTd = '<td>'+p.amountDue+'</td>';
-        var payBtnTd = '<td><button id="pay-' + p.id + '" style="background-color:#00FF00;">Pay now</button></td>';
+        var payBtnTd = '<td id="btn-col"><button id="'+ p.senderId +'-'+ p.receipt.id +'" style="background-color:#00FF00;">Pay Now</button></td>';
         var row = '<tr>'
         
         row += '<tr>';// id="pay-' + p.id + '">';
         row += groupTd + receiptTd + receiverTd + totalTd + amountDueTd + payBtnTd;
         row += '</tr>';
         $('#unpaid').append(row);
-        $('#pay-'+p.id).on('click', function(e){
-          $('#'+e.target.id).css('background-color', 'red');
-          $('#'+e.target.id).attr('disabled', true);
-          $('#'+e.target.id).text('Pending Confirmation');
 
-          console.log(e);
-          alert(e.target.id);
+        // on pay button click
+        $('#'+ p.senderId +'-'+ p.receipt.id).on('click', function(e){
+
+          /*$('#'+e.target.id).css('background-color', 'red');
+          $('#'+e.target.id).attr('disabled', true);
+          $('#'+e.target.id).text('Pending Confirmation');*/
+
+
+          var ids = e.target.id.split("-");
+          var data = {
+            userId: ids[0],
+            receiptId: ids[1]
+          };
+          console.log(data);
+          $.ajax({
+            url: 'pay',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            type: 'POST',
+            success: function(response){
+              $.sticky('yay!', {'position': 'top-center', 'type': 'st-success'});
+            },
+            error: function(){
+              $.sticky("Error on PayPal submit.", {'position': 'top-center', 'type': 'st-error'});
+            }
+          });
         });
       }
-      /*$.each(function(index, element){
-      });
-      console.log(p);*/
+
     },
     error: function(){
-      console.log(' uh oh ');
+      $.sticky("Error while fetching payments.", {'position': 'top-center', 'type': 'st-error'});
     }
 
   });
 
   //});
 }
+
