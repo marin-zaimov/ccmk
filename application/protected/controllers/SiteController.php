@@ -104,7 +104,7 @@ class SiteController extends Controller
 
         if ($user) {
           Yii::app()->user->setState('paypal_account', $postData['username']);
-				  $this->redirect(Yii::app()->user->returnUrl);
+				  $this->redirect('/marin-ccmk/index.php/bills/index');//Yii::app()->user->returnUrl);
         }else{
           // not found... show errors
           $model->validate();

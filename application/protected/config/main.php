@@ -9,7 +9,7 @@ Yii::setPathOfAlias('PayPal','/home/ubuntu/marin-ccmk/ccmk/application/protected
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Web Application',
+	'name'=>'Bill Split PayPal Portal',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
