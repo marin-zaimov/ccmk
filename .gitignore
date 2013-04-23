@@ -1,2 +1,3 @@
 application/protected/runtime/
 application/assets
+*.swp
