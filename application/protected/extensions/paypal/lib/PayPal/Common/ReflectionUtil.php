@@ -1,5 +1,6 @@
 <?php
-namespace PayPal\Common;
+//namespace PayPal\Common;
+namespace PayPal;
 
 class ReflectionUtil {
 	

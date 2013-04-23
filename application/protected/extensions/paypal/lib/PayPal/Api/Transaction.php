@@ -1,7 +1,7 @@
 <?php 
 
-//namespace PayPal\Api;
-namespace PayPal;
+namespace PayPal\Api;
+//namespace PayPal;
 
 /**
  * 

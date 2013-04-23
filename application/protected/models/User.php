@@ -11,6 +11,9 @@
  * @property string $startDate
  * @property string $endDate
  * @property string $lastLogin
+ * @property string $password_hash
+ * @property string $password_salt
+ * @property string $paypal_account
  *
  * The followings are the available model relations:
  * @property Receipt[] $receipts
@@ -45,11 +48,13 @@ class User extends BaseActiveRecord
 		// will receive user inputs.
 		return array(
 			array('email, startDate', 'required'),
-			array('firstName, lastName, email', 'length', 'max'=>45),
+			array('firstName, lastName, email, paypal_account', 'length', 'max'=>45),
+      array('password_hash', 'length', 'max'=>255),
+      array('password_salt', 'length', 'max'=>100),
 			array('endDate, lastLogin', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, firstName, lastName, email, startDate, endDate, lastLogin', 'safe', 'on'=>'search'),
+			array('id, firstName, lastName, email, startDate, endDate, lastLogin, password_hash, password_salt, paypal_account', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -80,6 +85,9 @@ class User extends BaseActiveRecord
 			'startDate' => 'Start Date',
 			'endDate' => 'End Date',
 			'lastLogin' => 'Last Login',
+      'password_hash' => 'Password Hash',
+      'password_salt' => 'Password Salt',
+      'paypal_account' => 'Paypal Account',
 		);
 	}
 
@@ -101,6 +109,9 @@ class User extends BaseActiveRecord
 		$criteria->compare('startDate',$this->startDate,true);
 		$criteria->compare('endDate',$this->endDate,true);
 		$criteria->compare('lastLogin',$this->lastLogin,true);
+    $criteria->compare('password_hash',$this->password_hash,true);
+    $criteria->compare('password_salt',$this->password_salt,true);
+    $criteria->compare('paypal_account',$this->paypal_account,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

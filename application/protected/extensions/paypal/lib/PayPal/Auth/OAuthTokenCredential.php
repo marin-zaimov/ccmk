@@ -1,6 +1,7 @@
 <?php
 
 namespace PayPal\Auth;
+//namespace PayPal;
 
 /**
  * Oauth Token credential

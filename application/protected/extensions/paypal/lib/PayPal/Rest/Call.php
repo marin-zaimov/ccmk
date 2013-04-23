@@ -4,12 +4,19 @@ namespace PayPal\Rest;
 use PayPal\Auth\OAuthTokenCredential;
 
 use PayPal\Common\UserAgent;
+/*namespace PayPal;
+require_once("protected/extensions/paypal/lib/PayPal/Auth/OAuthTokenCredential.php");
+require_once("protected/extensions/paypal/lib/PayPal/Common/UserAgent.php");
+require_once("protected/extensions/paypal/lib/PayPal/Common/UserAgent.php");
+require_once("protected/extensions/paypal/vendor/paypal/sdk-core-php/lib/PPLoggingManager.php");*/
+//require_once("protected/extensions/paypal/vendor/paypal/sdk-core-php/lib$
 
 class Call {
 	
 	private $logger;
 	
 	public function __construct() {
+		//$this->logger = new \PPLoggingManager(__CLASS__);
 		$this->logger = new \PPLoggingManager(__CLASS__);
 	}
 
@@ -28,6 +35,7 @@ class Call {
 			// Try picking credentials from the config file
 			$credMgr = \PPCredentialManager::getInstance();
 			$credValues = $credMgr->getCredentialObject();
+
 			if(!is_array($credValues)) {
 				throw new \PPMissingCredentialException("Empty or invalid credentials passed");
 			}

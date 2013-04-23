@@ -1,9 +1,10 @@
 <?php
 
 namespace PayPal\Common;
+//namespace PayPal;
 
-define('SDK_NAME', 'rest-sdk-php');
-define('SDK_VERSION', '0.5.0');
+if(!defined('SDK_NAME')) define('SDK_NAME', 'rest-sdk-php');
+if(!defined('SDK_VERSION')) define('SDK_VERSION', '0.5.0');
 
 class UserAgent {
 

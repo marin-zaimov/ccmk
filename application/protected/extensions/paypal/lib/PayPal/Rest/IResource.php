@@ -1,7 +1,7 @@
 <?php
 
-//namespace PayPal\Rest;
-namespace PayPal;
+namespace PayPal\Rest;
+//namespace PayPal;
 
 interface IResource {
 	

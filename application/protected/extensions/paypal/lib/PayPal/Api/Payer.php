@@ -1,7 +1,9 @@
 <?php 
 
-//namespace PayPal\Api;
-namespace PayPal;
+namespace PayPal\Api;
+//namespace PayPal;
+//require_once("protected/extensions/paypal/lib/PayPal/Api/Resource.php");
+//use \Resource;
 
 /**
  * 

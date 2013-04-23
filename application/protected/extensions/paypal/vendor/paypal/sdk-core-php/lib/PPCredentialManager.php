@@ -54,6 +54,7 @@ class PPCredentialManager
 			if(isset($credArr[$key.".Signature"]) 
 					&& $credArr[$key.".Signature"] != null && $credArr[$key.".Signature"] != ""){
 					
+
 				$userName = isset($credArr[$key.'.UserName']) ? $credArr[$key.'.UserName'] : "";
 				$password = isset($credArr[$key.'.Password']) ? $credArr[$key.'.Password'] : "";
 				$signature = isset($credArr[$key.'.Signature']) ? $credArr[$key.'.Signature'] : "";

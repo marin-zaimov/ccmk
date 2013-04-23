@@ -1,7 +1,9 @@
 <?php
 
 // uncomment the following to define a path alias
-// Yii::setPathOfAlias('local','path/to/local-folder');
+Yii::setPathOfAlias('PayPal','/home/ubuntu/marin-ccmk/ccmk/application/protected/extensions/paypal/lib/PayPal/');
+//Yii::setPathOfAlias('PayPal\Api','/home/ubuntu/marin-ccmk/ccmk/application/protected/extensions/paypal/lib/PayPal/Api/');
+
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
@@ -21,6 +23,10 @@ return array(
 		'application.extensions.paypal.lib.PayPal.Api.*',
 		'application.extensions.paypal.lib.PayPal.Common.*',
 		'application.extensions.paypal.lib.PayPal.Rest.*',
+		'application.extensions.paypal.lib.PayPal.Auth.*',
+		'application.extensions.paypal.vendor.paypal.sdk-core-php.lib.*',
+		'application.extensions.paypal.vendor.paypal.sdk-core-php.lib.exceptions.*',
+		'application.extensions.paypal.vendor.paypal.sdk-core-php.lib.auth.*',
 	),
 
 	'modules'=>array(

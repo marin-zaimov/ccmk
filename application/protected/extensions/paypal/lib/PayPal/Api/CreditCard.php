@@ -1,12 +1,13 @@
 <?php 
 
-/*namespace PayPal\Api;
+namespace PayPal\Api;
 use PayPal\Rest\IResource;
 use PayPal\Rest\Call;
-use PayPal\Rest\ApiContext;*/
-namespace PayPal;
-require_once("protected/extensions/paypal/lib/PayPal/Api/Resource.php");
-require_once("protected/extensions/paypal/lib/PayPal/Rest/IResource.php");
+use PayPal\Rest\ApiContext;
+//namespace PayPal;
+
+//require_once("protected/extensions/paypal/lib/PayPal/Api/Resource.php");
+//require_once("protected/extensions/paypal/lib/PayPal/Rest/IResource.php");
 
 /**
  * 

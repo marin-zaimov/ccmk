@@ -1,5 +1,5 @@
 <?php
-namespace PayPal\Common;
+//namespace PayPal\Common;
 
 class ArrayUtil {
 	
