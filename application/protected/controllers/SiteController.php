@@ -88,12 +88,61 @@ class SiteController extends Controller
 		}
 
 		// collect user input data
+
 		if(isset($_POST['LoginForm']))
 		{
 			/*$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
 				$this->redirect(Yii::app()->user->returnUrl);*/
+
+      try {
+        $postData = ($_POST['LoginForm']);
+
+        //$user = User::model()->findByAttributes(array('paypal_account' => $postData['username'], 'password' => $postData['password']));
+        $user = User::model()->findByAttributes(array('paypal_account' => $postData['username']));
+
+        if ($user) {
+          Yii::app()->user->setState('paypal_account', $postData['username']);
+				  $this->redirect(Yii::app()->user->returnUrl);
+        }else{
+          // not found... show errors
+          $model->validate();
+          $model->login();
+        }
+
+
+          /*$suppliedPassword = PasswordHelper::hashPassword($postData['password'], $user->password_salt);
+          if ($suppliedPassword == $user->password_hash) {
+            // SUCCESS
+            $response['result'] = true;
+            $response['id'] = $user->id;
+            $response['message'] = "Success.";
+            echo json_encode($response);
+          }
+          else {
+            $response['result'] = false;
+            $response['id'] = -1;
+            $response['message'] = "Error. Invalid password.";
+            //$response['message'] = "Error. Invalid email and password combination.";
+            echo json_encode($response);
+          }
+        }
+        else {
+          $response['result'] = false;
+          $response['id'] = -1;
+          $response['message'] = "Error. Email not found.";
+          //$response['message'] = "Error. Invalid email and password combination.";
+          echo json_encode($response);
+        }*/
+      }
+      catch (Exception $e) {
+        echo "Exception: " . $e->getMessage();
+      }
+      
+
+
+
 		}
 		// display the login form
 		$this->render('login',array('model'=>$model));
