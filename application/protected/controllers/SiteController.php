@@ -29,6 +29,7 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
+    Yii::app()->user->setState('paypal_account', null);
 		$this->render('index');
 	}
 
@@ -77,6 +78,11 @@ class SiteController extends Controller
 	 */
 	public function actionLogin()
 	{
+  
+    $state = Yii::app()->user->getState('paypal_account');
+    if(isset($state)){
+      $this->redirect('/marin-ccmk/index.php/bills/index');
+    }
 
 		$model=new LoginForm;
 
@@ -105,6 +111,18 @@ class SiteController extends Controller
         if ($user) {
           Yii::app()->user->setState('paypal_account', $postData['username']);
 				  $this->redirect('/marin-ccmk/index.php/bills/index');//Yii::app()->user->returnUrl);
+          //echo $this->widget('zii.widgets.CMenu', 'id');
+          /*$this->widget('zii.widgets.CMenu', array(
+            'items'=>array(
+              array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+              array('label'=>'Bills', 'url'=>array('/bills/index')),
+              //array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+              //array('label'=>'Contact', 'url'=>array('/site/contact')),
+              //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+            ),
+          ));*/
+
+
         }else{
           // not found... show errors
           $model->validate();
