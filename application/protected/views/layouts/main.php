@@ -22,6 +22,7 @@
   <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.min.js"></script>
   <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/sticky.min.js"></script>
   <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap.min.js"></script>
+  <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/highcharts.js"></script>
 
 
 
@@ -41,15 +42,24 @@
 		<?php
     $state = Yii::app()->user->getState('paypal_account');
     if(isset($state)){
-      $this->widget('zii.widgets.CMenu',array(
-        'items'=>array(
-          //array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-          array('label'=>'Bills', 'url'=>array('/bills/index')),
-          //array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-          //array('label'=>'Contact', 'url'=>array('/site/contact')),
-          array('label'=>'Logout ('.Yii::app()->user->getState('paypal_account').')', 'url'=>array('/site/logout'))//, 'visible'=>!Yii::app()->user->isGuest)
-        ),
-		  ));
+      if($state == "sysadmin"){
+        $this->widget('zii.widgets.CMenu',array(
+          'items'=>array(
+            array('label'=>'Analytics', 'url'=>array('/analytics/index')),
+            array('label'=>'Logout ('.Yii::app()->user->getState('paypal_account').')', 'url'=>array('/site/logout'))
+          ),
+        ));
+      }else{
+        $this->widget('zii.widgets.CMenu',array(
+          'items'=>array(
+            //array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+            array('label'=>'Bills', 'url'=>array('/bills/index')),
+            array('label'=>'Groups', 'url'=>array('/group/index')),
+            array('label'=>'Receipts', 'url'=>array('/receipt/index')),
+            array('label'=>'Logout ('.Yii::app()->user->getState('paypal_account').')', 'url'=>array('/site/logout'))//, 'visible'=>!Yii::app()->user->isGuest)
+          ),
+        ));
+      }
     }else{
       $this->widget('zii.widgets.CMenu',array(
         'items'=>array(

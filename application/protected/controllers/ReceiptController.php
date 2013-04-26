@@ -2,6 +2,14 @@
 
 class ReceiptController extends BaseController
 {
+
+
+	public function actionIndex()
+	{
+		$this->render('index');
+	}
+
+ 
 	// http://ec2-50-17-177-44.compute-1.amazonaws.com/marin-ccmk/index.php/receipt/create?Receipt[amountDue]=30.57&Receipt[userId]=3&Receipt[groupId]=1&Receipt[name]=something%20swags%20here
 	public function actionCreate()
 	{
@@ -174,4 +182,37 @@ class ReceiptController extends BaseController
 		);
 	}
 	*/
+
+
+
+	public function actionGetAllUsersReceipts()
+	{
+		$response = new AjaxResponse;
+
+	  try {
+      $ppEmail = Yii::app()->user->getState('paypal_account');
+      $user = User::model()->findByAttributes(array('paypal_account' => $ppEmail));
+
+			$receipts = array();
+		  foreach ($user->receipts as $r) {
+		  	$rAttr = $r->attributes(array('payments'));
+		  	$rAttr->groupName = $r->group->name;
+		  	$rAttr->paid = $r->isPaid();
+		  	$receipts[] = $rAttr;
+		  }
+		  $response->setStatus(true, 'Retreived successfully');
+		  $response->addData('receipts', $receipts);
+		}
+		catch (ValidationException $vex)
+		{
+			$response->setStatus(false);
+			$response->addMessages($vex->getErrors());
+		}
+		catch (Exception $e) {
+		  $response->setStatus(false, $e->getMessage());
+		}
+		echo $response->asJson();
+	}
+
+
 }

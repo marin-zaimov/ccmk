@@ -3,7 +3,6 @@ $(function(){
 });
 
 function getPayments(){
-  //$('#wuddup').click('on', function(){
 
   var payload = {senderId: 1};
 
@@ -28,7 +27,6 @@ function getPayments(){
         var totalTd = '<td>'+p.receipt.amountDue+'</td>';
         var amountDueTd = '<td>'+p.amountDue+'</td>';
         var payBtnTd = '<td id="btn-col"><button id="'+ p.senderId +'-'+ p.receipt.id +'" style="background-color:#00FF00;">Pay Now</button></td>';
-        var row = '<tr>'
         
         row += '<tr>';// id="pay-' + p.id + '">';
         row += groupTd + receiptTd + receiverTd + totalTd + amountDueTd + payBtnTd;
@@ -73,6 +71,11 @@ function getPayments(){
 
   });
 
-  //});
+
+
+
+
+
+
 }
 

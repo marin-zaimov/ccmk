@@ -81,7 +81,11 @@ class SiteController extends Controller
   
     $state = Yii::app()->user->getState('paypal_account');
     if(isset($state)){
-      $this->redirect('/marin-ccmk/index.php/bills/index');
+      if($state == 'sysadmin'){
+        $this->redirect('/marin-ccmk/index.php/analytics/index');
+      }else{
+        $this->redirect('/marin-ccmk/index.php/bills/index');
+      }
     }
 
 		$model=new LoginForm;
@@ -110,7 +114,11 @@ class SiteController extends Controller
 
         if ($user) {
           Yii::app()->user->setState('paypal_account', $postData['username']);
-				  $this->redirect('/marin-ccmk/index.php/bills/index');//Yii::app()->user->returnUrl);
+          if($user->paypal_account == 'sysadmin'){
+				    $this->redirect('/marin-ccmk/index.php/analytics/index');
+          }else{
+				    $this->redirect('/marin-ccmk/index.php/bills/index');//Yii::app()->user->returnUrl);
+          }
           //echo $this->widget('zii.widgets.CMenu', 'id');
           /*$this->widget('zii.widgets.CMenu', array(
             'items'=>array(

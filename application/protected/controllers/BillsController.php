@@ -9,7 +9,7 @@ class BillsController extends BaseController
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
+		// renders the view file 'protected/views/bills/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');
 	}
@@ -139,6 +139,8 @@ class BillsController extends BaseController
     }
     echo $response->asJson();
   }
+
+
 
 
 
